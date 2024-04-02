@@ -11,7 +11,7 @@ openai_api_key = st.sidebar.text_input('OpenAI API Key', type='password')
 temperature = st.sidebar.slider("Temperature", min_value=0.0, max_value=1.0, value=0.7, step=0.1)
 
 # Sidebar for selecting the LLM task
-task = st.sidebar.selectbox("Choose a task:", ["Generate SQL Code", "Summarization", "Question Answering"])
+task = st.sidebar.selectbox("Choose a task:", ["Generate Code", "Summarization", "Question Answering"])
 
 # Function to generate response based on the selected task
 def generate_response(input_text, task):
@@ -19,7 +19,7 @@ def generate_response(input_text, task):
     llm = OpenAI(temperature=temperature, openai_api_key=openai_api_key)
     
     # Switch for task types
-    if task == "Generate SQL Code":
+    if task == "Generate Code":
         # Assuming you have a specific prompt structure for SQL generation
         prompt = f"Translate the following natural language query into SQL: {input_text}"
         response = llm(prompt)
