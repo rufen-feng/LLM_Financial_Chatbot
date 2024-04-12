@@ -1,5 +1,5 @@
 import streamlit as st
-from langchain.llms import OpenAI
+from langchain_openai import ChatOpenAI
 import langchain
 from langchain.document_loaders import WebBaseLoader
 
@@ -9,7 +9,7 @@ sys.path.append("/Users/rufen/Documents/Github/LLM_Financial_Chatbot/FinRL-Meta/
 
 from finnlp.data_sources.company_announcement.juchao import Juchao_Announcement
 #from meta.data_processors.akshare import Akshare
-import yfinance as yf
+#import yfinance as yf
 
 import datetime
 from datetime import datetime, timedelta
@@ -31,7 +31,7 @@ task = st.sidebar.selectbox("Choose a task:", ["Summarization news", "Summarizat
 # Function to fetch text from a URL
 def fetch_text(input_url):
     try:
-        loader = WebBaseLoader(input_url)
+        loader = WebBaseLoader(input_url, verify_ssl=False)
         docs = loader.load()
         return "".join([doc.page_content for doc in docs])
     except Exception as e:
@@ -52,16 +52,21 @@ with st.form('my_form'):
         if not openai_api_key.startswith('sk-'):
             st.warning('Please enter a valid OpenAI API key!', icon='⚠️')
         else:
-            llm = OpenAI(temperature=temperature, openai_api_key=openai_api_key)
-            
+            llm = ChatOpenAI(model="gpt-3.5-turbo-0125", temperature=temperature, api_key=openai_api_key)
+                             
             if task == "Summarization news":
                 news = fetch_text(text)
                 if news:
                     prompt = "Please give a brief summary of these news and analyze the possible trend of the stock price of the Company. \
                         Please give trend results based on different possible assumptions." + news
-                    response = llm(prompt)
+                    messages = [
+                                    ("system", "You are a bank analyst."),
+                                    ("human", prompt),
+                                ]
+                    response = llm.invoke(messages)
+                    
                     st.write("Summarized News:")
-                    st.write(response)
+                    st.write(response.content) #response now is an AIMMessage object, get summary from it using .content. reference:https://python.langchain.com/docs/integrations/chat/openai/
                 else:
                     st.warning("Please enter a valid URL.")
 
@@ -73,7 +78,7 @@ with st.form('my_form'):
                 start_date = (today - half_year_delta).strftime("%Y-%m-%d")
                 end_date = today.strftime("%Y-%m-%d")
                 max_page = 100  
-                stock = "stock_number"   
+                stock = stock_number 
                 searchkey = ""       
                 get_content = True   
                 save_dir = "./tmp/"  
