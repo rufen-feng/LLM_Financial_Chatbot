@@ -1,0 +1,52 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Bar</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/styles.css') }}"><!DOCTYPE html>
+</head>
+<body>
+<div class="container">
+    <h1 class="heading">ZeroHedge Scraper</h1>
+    <div id="search-bar">
+        <input type="text" id="product" placeholder="Where are you looking for?">
+        <button id="search-button">Scrap</button>
+        <div id="terminate-button">
+            <button id="terminate-subprocess">Terminate Scrapping Process</button>
+        </div>
+    </div>
+    <div id="terminal-output">
+        <pre id="terminal-data"></pre>
+    </div>
+    <div id="file-data">
+        <pre id="file-data-content">Click Scrap Button to start...</pre>
+    </div>
+    <div>
+        <table id="listing-table">
+            <thead>
+                <tr>
+                     <th>Title</th>
+                     <th>author_name</th>
+                     <th>date_time</th>
+                     <th>category</th>
+                     <th>type</th>
+                     <th>relevance</th>
+                     <th>url</th>
+                     <th>comments</th>
+                     <th>views</th>
+                     <th>image_urls</th>
+                     <th>references</th>
+                     <th>content</th>
+                </tr>
+            </thead>
+            <tbody id="listing-table-body">
+                <!-- Table rows will be dynamically inserted here -->
+            </tbody>
+        </table>
+    </div>
+</div>
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>
+
+

@@ -1,6 +1,7 @@
 import streamlit as st
-from langchain.llms import OpenAI
 import langchain
+
+from langchain_openai import OpenAI
 from langchain.document_loaders import WebBaseLoader
 
 import sys
@@ -23,7 +24,7 @@ st.title("💬 Rufen's Investment Advisor")
 openai_api_key = st.sidebar.text_input('OpenAI API Key', type='password')
 
 # Sidebar slider for temperature control
-temperature = st.sidebar.slider("Temperature", min_value=0.0, max_value=1.0, value=0.5, step=0.1)
+temperature = st.sidebar.slider("Temperature", min_value=0.0, max_value=1.0, value=0.5, step=0.1) # higher, lead to more diverse and creative outputs.
 
 # Sidebar for selecting the LLM task
 task = st.sidebar.selectbox("Choose a task:", ["Summarization news", "Summarization reports", "Question Answering"])
@@ -73,7 +74,7 @@ with st.form('my_form'):
                 start_date = (today - half_year_delta).strftime("%Y-%m-%d")
                 end_date = today.strftime("%Y-%m-%d")
                 max_page = 100  
-                stock = "stock_number"   
+                stock = stock_number  
                 searchkey = ""       
                 get_content = True   
                 save_dir = "./tmp/"  
